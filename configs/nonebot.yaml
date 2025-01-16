@@ -1,0 +1,9 @@
+driver: ~aiohttp
+host: 0.0.0.0  # 允许外部访问
+port: 8080     # 可以根据需要修改端口
+
+onebot_ws_urls:
+  - ws://your-framework-ws-url:port  # 替换为你实际使用的WebSocket地址
+
+superusers:
+  - 123456789  # 替换为你的账号 

@@ -1,0 +1,37 @@
+name: Check Upstream Updates
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 每天检查一次
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check upstream updates
+        id: check
+        run: |
+          # 获取上游最新commit
+          UPSTREAM_COMMIT=$(curl -s https://api.github.com/repos/IdhagnBot/IdhagnBot/commits/main | jq -r .sha)
+          # 获取本地记录的commit
+          LOCAL_COMMIT=$(cat .upstream-commit 2>/dev/null || echo "none")
+          
+          if [ "$UPSTREAM_COMMIT" != "$LOCAL_COMMIT" ]; then
+            echo "Updates found!"
+            echo $UPSTREAM_COMMIT > .upstream-commit
+            echo "updated=true" >> $GITHUB_OUTPUT
+          else
+            echo "No updates"
+            echo "updated=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Trigger build workflow
+        if: steps.check.outputs.updated == 'true'
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: upstream_update 

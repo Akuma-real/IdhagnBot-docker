@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  idhagnbot:
+    image: ghcr.io/${GITHUB_REPOSITORY:-your-username/idhagnbot-docker}:latest
+    # 如果要本地构建，取消下面这行的注释
+    # build: .
+    volumes:
+      - ./configs:/app/configs
+      - ./resources:/app/resources
+      - ./states:/app/states
+      - ./user_plugins:/app/user_plugins
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "6700:6700" 
