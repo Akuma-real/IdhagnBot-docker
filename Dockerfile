@@ -1,39 +1,38 @@
 # 使用Python 3.10作为基础镜像
 FROM python:3.10-slim
 
-# 安装系统依赖
-RUN apt-get update && apt-get install -y \
-    git \
-    cairo \
-    libcairo2-dev \
-    pango1.0-tools \
-    libpango1.0-dev \
-    libgobject-2.0-0 \
-    libgirepository1.0-dev \
-    pkg-config \
-    gcc \
-    g++ \
-    libyaml-dev \
-    nodejs \
-    npm \
-    libqalculate-dev \
-    libzim-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# 安装PDM
-RUN pip install pdm
-
 # 设置工作目录
 WORKDIR /app
 
-# 复制项目文件
-COPY . .
+# 安装系统依赖
+RUN apt-get update && apt-get install -y \
+    git \
+    libyaml-dev \
+    bubblewrap \
+    curl \
+    gnupg \
+    libqalculate-dev \
+    libzim-dev \
+    pkg-config \
+    gcc \
+    g++ \
+    && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g npm \
+    && rm -rf /var/lib/apt/lists/*
 
-# 使用PDM安装依赖（包含所有可选功能）
+# 安装 PDM
+RUN pip install -U pip setuptools wheel
+RUN pip install pdm
+
+# 克隆原始仓库
+RUN git clone https://github.com/su226/IdhagnBot.git .
+
+# 安装所有功能
 RUN pdm install -G :all
 
-# 创建必要的目录
-RUN mkdir -p configs resources states user_plugins
+# 设置环境变量
+ENV PATH="/app/.venv/bin:$PATH"
 
-# 设置启动命令
+# 启动命令
 CMD ["pdm", "run", "start"] 
