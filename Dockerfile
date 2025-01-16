@@ -17,10 +17,15 @@ RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
     cmake \
+    meson \
+    ninja-build \
+    libcairo2 \
     libcairo2-dev \
     libgirepository1.0-dev \
+    python3-cairo \
     python3-cairo-dev \
     gir1.2-gtk-3.0 \
+    gobject-introspection \
     && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
     && npm install -g npm \
