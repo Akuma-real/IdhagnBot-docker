@@ -9,4 +9,9 @@ services:
       - ./states:/app/states
     restart: unless-stopped
     ports:
-      - "8080:8080" 
+      - "8080:8080"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8080
+      - ONEBOT_WS_URL=ws://89.213.51.18:3000
+      - SUPERUSERS=["1372969882"] 

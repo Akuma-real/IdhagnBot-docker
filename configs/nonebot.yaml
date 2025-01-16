@@ -1,8 +1,8 @@
 driver: ~aiohttp
-host: ${HOST:0.0.0.0}  # 允许外部访问，可通过环境变量 HOST 覆盖
-port: ${PORT:8080}     # 可通过环境变量 PORT 覆盖端口
+host: ${HOST:0.0.0.0}
+port: ${PORT:8080}
 
 onebot_ws_urls:
-  - ${ONEBOT_WS_URL:ws://127.0.0.1:6700}  # 可通过环境变量 ONEBOT_WS_URL 覆盖连接地址
+  - ${ONEBOT_WS_URL:ws://127.0.0.1:6700}
 
-superusers: ${SUPERUSERS:[123456789]}  # 可通过环境变量 SUPERUSERS 覆盖超级用户列表 
+superusers: ["superusers"] 

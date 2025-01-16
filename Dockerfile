@@ -1,38 +1,36 @@
-# 使用Python 3.10作为基础镜像
-FROM python:3.10-slim
+# 使用 Python Alpine 基础镜像
+FROM python:3.10-alpine
 
 # 设置工作目录
 WORKDIR /app
 
 # 安装系统依赖
-RUN apt-get update && apt-get install -y \
+RUN apk add --no-cache \
     git \
-    libyaml-dev \
+    yaml-dev \
     bubblewrap \
     curl \
-    gnupg \
-    libqalculate-dev \
-    libzim-dev \
-    pkg-config \
+    nodejs \
+    npm \
+    libqalculate \
+    libzim \
+    pkgconfig \
     gcc \
     g++ \
+    musl-dev \
     cmake \
     meson \
-    ninja-build \
-    libcairo2 \
-    libcairo2-dev \
-    libgirepository1.0-dev \
-    python3-cairo \
-    python3-cairo-dev \
-    gir1.2-gtk-3.0 \
-    gobject-introspection \
-    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs \
-    && npm install -g npm \
-    && rm -rf /var/lib/apt/lists/*
+    ninja \
+    cairo \
+    cairo-dev \
+    gobject-introspection-dev \
+    py3-cairo \
+    py3-gobject3 \
+    mesa-gl \
+    linux-headers
 
 # 安装 PDM
-RUN pip install -U pip setuptools wheel
+RUN pip install -U pip setuptools wheel typing-extensions
 RUN pip install pdm
 
 # 克隆原始仓库
