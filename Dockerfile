@@ -27,7 +27,22 @@ RUN apk add --no-cache \
     py3-cairo \
     py3-gobject3 \
     mesa-gl \
-    linux-headers
+    linux-headers \
+    # skia-python 依赖
+    fontconfig \
+    fontconfig-dev \
+    freetype \
+    freetype-dev \
+    harfbuzz \
+    harfbuzz-dev \
+    # playwright 依赖
+    chromium \
+    nss \
+    freetype \
+    freetype-dev \
+    harfbuzz \
+    ttf-freefont \
+    font-noto
 
 # 安装 PDM
 RUN pip install -U pip setuptools wheel typing-extensions
@@ -41,6 +56,9 @@ RUN pdm install -G :all
 
 # 设置环境变量
 ENV PATH="/app/.venv/bin:$PATH"
+# Playwright 环境变量
+ENV PLAYWRIGHT_BROWSERS_PATH=/usr/lib/chromium
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 
 # 启动命令
 CMD ["pdm", "run", "start"] 
