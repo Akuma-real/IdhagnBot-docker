@@ -2,7 +2,7 @@ version: '3'
 
 services:
   idhagnbot:
-    image: ghcr.io/${GITHUB_REPOSITORY:-your-username/idhagnbot-docker}:latest
+    image: ghcr.io/akuma-real/idhagnbot-docker:latest
     # 如果要本地构建，取消下面这行的注释
     # build: .
     volumes:
